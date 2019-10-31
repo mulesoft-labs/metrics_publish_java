@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.util.FileSize;
 import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.rolling.FixedWindowRollingPolicy;
 import ch.qos.logback.core.rolling.RollingFileAppender;
@@ -172,7 +173,8 @@ public final class Logger {
         
         // file max size - if fileLimit is 0, set max file size to maximum allowed
         long fileLimit = getFileLimitInKBytes() != 0 ? getFileLimitInKBytes() * 1024 : Long.MAX_VALUE;
-        SizeBasedTriggeringPolicy<ILoggingEvent> triggeringPolicy = new SizeBasedTriggeringPolicy<ILoggingEvent>(String.valueOf(fileLimit));
+        SizeBasedTriggeringPolicy<ILoggingEvent> triggeringPolicy = new SizeBasedTriggeringPolicy<ILoggingEvent>();
+        triggeringPolicy.setMaxFileSize(new FileSize(fileLimit));
         triggeringPolicy.start();
         
         FileAppender.setRollingPolicy(rollingPolicy);
